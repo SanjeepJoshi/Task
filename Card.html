@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Card Swipe Animation</title>
     <style>
+      /* Reset default styles for all elements */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      /* Body styles for centering and background */
       body {
         display: flex;
         justify-content: center;
@@ -23,12 +25,14 @@
         background-size: 200% 200%;
       }
 
+      /* Card container styles */
       .card-container {
         position: relative;
         width: 300px;
         height: 300px;
       }
 
+      /* Styles for individual cards */
       .card {
         position: absolute;
         width: 100%;
@@ -41,6 +45,8 @@
         align-items: center;
         transition: transform 0.5s ease, opacity 0.5s ease;
       }
+
+      /* Container for the content inside the card */
       .container {
         position: absolute;
         top: 30px;
@@ -51,17 +57,18 @@
         -moz-box-shadow: 17px 15px 26px -6px rgba(186, 166, 16, 0.55) inset;
         border-radius: 10px;
       }
-      .bottom{
+
+      /* Bottom section of the card */
+      .bottom {
         position: absolute;
-        /* border: 1px solid black; */
         top: 150px;
         width:  250px;
         height: 60px;
-        
       }
-      .circle{
+
+      /* Circle element inside the bottom section */
+      .circle {
         position: absolute;
-        /* border: 1px solid black; */
         border-radius: 50%;
         top: 15px;
         left: 5px;
@@ -70,11 +77,11 @@
         box-shadow: 17px 15px 26px -6px rgba(151, 106, 10, 0.55) inset;
         -webkit-box-shadow: 17px 15px 26px -6px rgba(217, 224, 31, 0.55) inset;
         -moz-box-shadow: 17px 15px 26px -6px rgba(186, 166, 16, 0.55) inset;
-       
       }
-      .rectangle{
+
+      /* Rectangle element inside the bottom section */
+      .rectangle {
         position: absolute;
-        /* border: 1px solid black; */
         top: 15px;
         height: 30px;
         width: 200px;
@@ -84,26 +91,31 @@
         -moz-box-shadow: 17px 15px 26px -6px rgba(186, 166, 16, 0.55) inset;
         border-radius: 10px;
       }
+
+      /* Hidden state for the card (when it's moved off-screen) */
       .card.hidden {
-        opacity: 0;
-        transform: translateY(-100%); /* Move the card upwards */
+        opacity: 0; /* Make the card invisible */
+        transform: translateY(-100%); /* Move the card upwards off the screen */
       }
 
+      /* Active card state (the currently visible card) */
       .card.active {
-        z-index: 1;
-        transform: translateY(0);
-        opacity: 1;
+        z-index: 1; /* Bring the active card to the front */
+        transform: translateY(0); /* Position it at the center */
+        opacity: 1; /* Make it fully visible */
       }
 
+      /* Below state for the cards that are behind the active card */
       .card.below {
-        z-index: 0;
-        transform: translateY(120%);
-        opacity: 0.8; /* Add slight opacity for below cards */
+        z-index: 0; /* Send it behind the active card */
+        transform: translateY(120%); /* Move it below the screen */
+        opacity: 0.8; /* Make it slightly transparent */
       }
     </style>
   </head>
   <body>
     <div class="card-container">
+      <!-- Active card (the one currently in view) -->
       <div class="card active">
         <div class="container"></div>
         <div class="bottom">
@@ -111,53 +123,64 @@
           <div class="rectangle"></div>
         </div>
       </div>
-      <div class="card below">  <div class="container"></div>
-      <div class="bottom">
-        <div class="circle"></div>
-        <div class="rectangle"></div>
-      </div></div>
-      <div class="card below">  <div class="container"></div>
-      <div class="bottom">
-        <div class="circle"></div>
-        <div class="rectangle"></div>
-      </div></div>
-      <div class="card below">  <div class="container"></div>
-      <div class="bottom">
-        <div class="circle"></div>
-        <div class="rectangle"></div>
-      </div></div>
-      <div class="card below">  <div class="container"></div>
-      <div class="bottom">
-        <div class="circle"></div>
-        <div class="rectangle"></div>
-      </div></div>
-      
-      </div></div>
+
+      <!-- Cards in the 'below' state (behind the active card) -->
+      <div class="card below">  
+        <div class="container"></div>
+        <div class="bottom">
+          <div class="circle"></div>
+          <div class="rectangle"></div>
+        </div>
+      </div>
+      <div class="card below">  
+        <div class="container"></div>
+        <div class="bottom">
+          <div class="circle"></div>
+          <div class="rectangle"></div>
+        </div>
+      </div>
+      <div class="card below">  
+        <div class="container"></div>
+        <div class="bottom">
+          <div class="circle"></div>
+          <div class="rectangle"></div>
+        </div>
+      </div>
+      <div class="card below">  
+        <div class="container"></div>
+        <div class="bottom">
+          <div class="circle"></div>
+          <div class="rectangle"></div>
+        </div>
+      </div>
     </div>
 
     <script>
+      // Select all card elements
       const cards = document.querySelectorAll(".card");
-      let currentIndex = 0;
+      let currentIndex = 0; // Start with the first card
 
+      // Function to swipe the card (move it and show the next one)
       function swipeCard() {
-        const currentCard = cards[currentIndex];
-        currentCard.classList.remove("active");
-        currentCard.classList.add("hidden"); // Apply fade-out and upward movement
+        const currentCard = cards[currentIndex]; // Get the currently active card
+        currentCard.classList.remove("active"); // Remove the active class
+        currentCard.classList.add("hidden"); // Add the hidden class to move it off-screen
 
         // Move to the next card
-        currentIndex = (currentIndex + 1) % cards.length;
-        const nextCard = cards[currentIndex];
-        nextCard.classList.remove("below");
-        nextCard.classList.add("active");
+        currentIndex = (currentIndex + 1) % cards.length; // Update the index to the next card (looping back to the first card)
+        const nextCard = cards[currentIndex]; // Get the next card
+        nextCard.classList.remove("below"); // Remove the 'below' class from the next card
+        nextCard.classList.add("active"); // Add the 'active' class to the next card
 
-        // Move the card after the active one to "below" position
-        const upcomingIndex = (currentIndex + 1) % cards.length;
-        cards[upcomingIndex].classList.add("below");
+        // Move the next card (after the active one) to the 'below' state
+        const upcomingIndex = (currentIndex + 1) % cards.length; // Get the upcoming card
+        cards[upcomingIndex].classList.add("below"); // Move it to the 'below' state
       }
 
+      // Add an event listener to the card container to trigger the swipe on click
       document
         .querySelector(".card-container")
-        .addEventListener("click", swipeCard);
+        .addEventListener("click", swipeCard); // Call the swipeCard function on click
     </script>
   </body>
 </html>
